@@ -72,7 +72,7 @@ public class TestSubscriberTest {
         oi.subscribe(o);
 
         thrown.expect(AssertionError.class);
-        thrown.expectMessage("Value at index: 1 expected to be [3] (Integer) but was: [2] (Integer)");
+        thrown.expectMessage("Value at index: 1 expected: [3] (Integer) but was: [2] (Integer)");
 
 
         o.assertReceivedOnNext(Arrays.asList(1, 3));
@@ -814,5 +814,16 @@ public class TestSubscriberTest {
         ts.assertValuesAndClear(4, 5);
 
         ts.assertNoValues();
+    }
+
+    @Test
+    public void assertAndClearResetsValueCount() {
+        TestSubscriber<Integer> ts = TestSubscriber.create();
+
+        ts.onNext(1);
+        ts.assertValuesAndClear(1);
+
+        ts.assertNoValues();
+        Assert.assertEquals(0, ts.getValueCount());
     }
 }

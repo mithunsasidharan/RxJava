@@ -17,7 +17,6 @@ package rx.observers;
 
 import rx.CompletableSubscriber;
 import rx.Subscription;
-import rx.annotations.Experimental;
 import rx.exceptions.*;
 import rx.plugins.RxJavaHooks;
 
@@ -25,9 +24,8 @@ import rx.plugins.RxJavaHooks;
  * Wraps another CompletableSubscriber and handles exceptions thrown
  * from onError and onCompleted.
  *
- * @since (if this graduates from Experimental/Beta to supported, replace this parenthetical with the release number)
+ * @since 1.3
  */
-@Experimental
 public final class SafeCompletableSubscriber implements CompletableSubscriber, Subscription {
     final CompletableSubscriber actual;
 
@@ -56,8 +54,8 @@ public final class SafeCompletableSubscriber implements CompletableSubscriber, S
 
     @Override
     public void onError(Throwable e) {
-        RxJavaHooks.onError(e);
         if (done) {
+            RxJavaHooks.onError(e);
             return;
         }
         done = true;

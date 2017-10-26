@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Netflix, Inc.
+ * Copyright 2014 Netflix, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package rx.internal.operators;
 
-package rx.functions;
+import rx.functions.Func1;
 
 /**
- * A functional interface that has a single close method that can throw.
- * @since 1.3
+ * Converts the element of a Single to the specified type.
+ * @param <T> the input value type
+ * @param <R> the output value type
  */
-public interface Cancellable {
+public class SingleOperatorCast<T, R> implements Func1<T, R> {
 
-    /**
-     * Cancel the action or free a resource.
-     * 
-     * @throws Exception
-     *             on error
-     */
-    void cancel() throws Exception;
+    final Class<R> castClass;
+
+    public SingleOperatorCast(Class<R> castClass) {
+        this.castClass = castClass;
+    }
+
+    @Override
+    public R call(T t) {
+        return castClass.cast(t);
+    }
 }
